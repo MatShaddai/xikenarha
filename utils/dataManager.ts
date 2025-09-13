@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { apiClient, handleApiError, isApiError } from './apiClient';
 
 export interface LogEntry {
   id: string;
@@ -24,16 +25,29 @@ const STORAGE_KEYS = {
 // Log Entry Management
 export const saveLogEntry = async (entry: Omit<LogEntry, 'id'>): Promise<LogEntry> => {
   try {
-    const newEntry: LogEntry = {
-      ...entry,
-      id: Date.now().toString(),
-    };
+    // Try to save to backend API first
+    try {
+      const response = await apiClient.post<LogEntry>('/logs', entry);
+      return response.data;
+    } catch (apiError) {
+      if (isApiError(apiError) && apiError.status >= 400 && apiError.status < 500) {
+        console.warn('API save failed, falling back to local storage:', apiError.message);
+      } else {
+        console.warn('Network error, falling back to local storage');
+      }
+      
+      // Fallback to local storage
+      const newEntry: LogEntry = {
+        ...entry,
+        id: Date.now().toString(),
+      };
 
-    const existingEntries = await getLogEntries();
-    const updatedEntries = [newEntry, ...existingEntries];
-    
-    await AsyncStorage.setItem(STORAGE_KEYS.LOG_ENTRIES, JSON.stringify(updatedEntries));
-    return newEntry;
+      const existingEntries = await getLogEntries();
+      const updatedEntries = [newEntry, ...existingEntries];
+      
+      await AsyncStorage.setItem(STORAGE_KEYS.LOG_ENTRIES, JSON.stringify(updatedEntries));
+      return newEntry;
+    }
   } catch (error) {
     console.error('Error saving log entry:', error);
     throw error;
@@ -42,8 +56,21 @@ export const saveLogEntry = async (entry: Omit<LogEntry, 'id'>): Promise<LogEntr
 
 export const getLogEntries = async (): Promise<LogEntry[]> => {
   try {
-    const entries = await AsyncStorage.getItem(STORAGE_KEYS.LOG_ENTRIES);
-    return entries ? JSON.parse(entries) : [];
+    // Try to get from backend API first
+    try {
+      const response = await apiClient.get<LogEntry[]>('/logs');
+      return response.data;
+    } catch (apiError) {
+      if (isApiError(apiError) && apiError.status >= 400 && apiError.status < 500) {
+        console.warn('API fetch failed, falling back to local storage:', apiError.message);
+      } else {
+        console.warn('Network error, falling back to local storage');
+      }
+      
+      // Fallback to local storage
+      const entries = await AsyncStorage.getItem(STORAGE_KEYS.LOG_ENTRIES);
+      return entries ? JSON.parse(entries) : [];
+    }
   } catch (error) {
     console.error('Error getting log entries:', error);
     return [];
@@ -63,7 +90,19 @@ export const deleteLogEntry = async (id: string): Promise<void> => {
 
 export const clearAllLogEntries = async (): Promise<void> => {
   try {
-    await AsyncStorage.removeItem(STORAGE_KEYS.LOG_ENTRIES);
+    // Try to clear from backend API first
+    try {
+      await apiClient.delete('/logs');
+    } catch (apiError) {
+      if (isApiError(apiError) && apiError.status >= 400 && apiError.status < 500) {
+        console.warn('API clear failed, falling back to local storage:', apiError.message);
+      } else {
+        console.warn('Network error, falling back to local storage');
+      }
+      
+      // Fallback to local storage
+      await AsyncStorage.removeItem(STORAGE_KEYS.LOG_ENTRIES);
+    }
   } catch (error) {
     console.error('Error clearing log entries:', error);
     throw error;
@@ -73,8 +112,21 @@ export const clearAllLogEntries = async (): Promise<void> => {
 // Employee Management
 export const getEmployees = async (): Promise<Employee[]> => {
   try {
-    const employees = await AsyncStorage.getItem(STORAGE_KEYS.EMPLOYEES);
-    return employees ? JSON.parse(employees) : getDefaultEmployees();
+    // Try to get from backend API first
+    try {
+      const response = await apiClient.get<Employee[]>('/employees');
+      return response.data;
+    } catch (apiError) {
+      if (isApiError(apiError) && apiError.status >= 400 && apiError.status < 500) {
+        console.warn('API fetch failed, falling back to local storage:', apiError.message);
+      } else {
+        console.warn('Network error, falling back to local storage');
+      }
+      
+      // Fallback to local storage
+      const employees = await AsyncStorage.getItem(STORAGE_KEYS.EMPLOYEES);
+      return employees ? JSON.parse(employees) : getDefaultEmployees();
+    }
   } catch (error) {
     console.error('Error getting employees:', error);
     return getDefaultEmployees();
