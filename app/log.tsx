@@ -4,12 +4,12 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
-  SafeAreaView,
   ActivityIndicator,
   TextInput,
   Share,
   Alert,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Stack } from "expo-router";
 import {
   ArrowLeft,

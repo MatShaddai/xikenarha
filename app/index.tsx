@@ -4,10 +4,10 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
   RefreshControl,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { ScanLine, LogIn, LogOut, Menu, Wifi, WifiOff, Clock } from "lucide-react-native";
 import { StatusBar } from "expo-status-bar";

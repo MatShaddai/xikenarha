@@ -8,8 +8,7 @@ import {
   Alert,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { Camera } from "expo-camera";
-import { BarCodeScanner } from "expo-barcode-scanner";
+import { Camera, CameraView } from "expo-camera";
 import { StatusBar } from "expo-status-bar";
 import { ArrowLeft, Check, X, Keyboard } from "lucide-react-native";
 import { saveLogEntry, findEmployeeByDeviceId } from "../utils/dataManager";
@@ -149,8 +148,11 @@ export default function ScannerScreen() {
       {/* Camera Scanner */}
       {!manualEntry && (
         <View className="flex-1">
-          <BarCodeScanner
-            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          <CameraView
+            onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+            barcodeScannerSettings={{
+              barcodeTypes: ["qr", "pdf417", "aztec", "ean13", "ean8", "code128", "code39", "codabar", "upc_e", "upc_a"],
+            }}
             style={StyleSheet.absoluteFillObject}
           />
 
