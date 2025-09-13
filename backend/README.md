@@ -1,254 +1,98 @@
-# Laptop Tracking System Backend
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
 
-NestJS backend API for the Municipal Building Laptop Tracking System.
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-## 🏗️ Project Structure
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-```
-backend/
-├── src/
-│   ├── auth/                 # Authentication module
-│   │   ├── auth.controller.ts
-│   │   ├── auth.service.ts
-│   │   ├── auth.module.ts
-│   │   ├── strategies/       # JWT strategies
-│   │   └── guards/           # Authentication guards
-│   ├── logs/                # Log entries module
-│   │   ├── logs.controller.ts
-│   │   ├── logs.service.ts
-│   │   ├── logs.module.ts
-│   │   └── entities/        # Log entity
-│   ├── employees/           # Employees module
-│   │   ├── employees.controller.ts
-│   │   ├── employees.service.ts
-│   │   ├── employees.module.ts
-│   │   └── entities/        # Employee entity
-│   ├── statistics/          # Statistics module
-│   │   ├── statistics.controller.ts
-│   │   ├── statistics.service.ts
-│   │   └── statistics.module.ts
-│   ├── common/              # Common utilities
-│   │   ├── filters/         # Exception filters
-│   │   ├── interceptors/    # Response interceptors
-│   │   ├── decorators/      # Custom decorators
-│   │   └── pipes/           # Validation pipes
-│   ├── config/              # Configuration
-│   │   ├── database.config.ts
-│   │   ├── jwt.config.ts
-│   │   └── app.config.ts
-│   ├── app.module.ts        # Root module
-│   └── main.ts              # Application entry point
-├── test/                    # Test files
-├── .env                     # Environment variables
-├── package.json
-├── tsconfig.json
-└── README.md
-```
+## Description
 
-## 🚀 Quick Start
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-### Prerequisites
-- Node.js 16+
-- PostgreSQL or MongoDB
-- npm or yarn
-
-### Installation
-
-1. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-2. **Set up environment variables**
-   ```bash
-   cp .env.example .env
-   ```
-   Edit `.env` with your configuration:
-   ```
-   DATABASE_URL=postgresql://username:password@localhost:5432/laptop_tracking
-   JWT_SECRET=your-super-secret-jwt-key
-   JWT_REFRESH_SECRET=your-refresh-token-secret
-   PORT=3000
-   NODE_ENV=development
-   ```
-
-3. **Set up database**
-   ```bash
-   # For PostgreSQL
-   npm run db:create
-   npm run db:migrate
-   ```
-
-4. **Start the server**
-   ```bash
-   # Development
-   npm run start:dev
-
-   # Production
-   npm run build
-   npm run start:prod
-   ```
-
-## 📋 API Endpoints
-
-### Authentication
-- `POST /auth/login` - User login
-- `POST /auth/register` - User registration
-- `POST /auth/refresh` - Refresh access token
-- `POST /auth/logout` - User logout
-
-### Logs
-- `GET /logs` - Get all log entries (with filtering)
-- `POST /logs` - Create new log entry
-- `GET /logs/:id` - Get specific log entry
-- `GET /logs/export` - Export logs to CSV
-- `POST /logs/bulk` - Create bulk log entries
-
-### Employees
-- `GET /employees` - Get all employees
-- `POST /employees` - Create new employee
-- `GET /employees/:id` - Get specific employee
-- `PUT /employees/:id` - Update employee
-- `DELETE /employees/:id` - Delete employee
-
-### Statistics
-- `GET /statistics/daily` - Daily statistics
-- `GET /statistics/weekly` - Weekly statistics
-- `GET /statistics/overview` - Overview dashboard
-
-## 🔧 Configuration
-
-### Database
-The application supports both PostgreSQL and MongoDB. Configure in `.env`:
-
-```env
-# PostgreSQL
-DATABASE_URL=postgresql://username:password@localhost:5432/laptop_tracking
-
-# MongoDB
-MONGODB_URI=mongodb://localhost:27017/laptop_tracking
-```
-
-### JWT Configuration
-```env
-JWT_SECRET=your-super-secret-jwt-key
-JWT_REFRESH_SECRET=your-refresh-token-secret
-JWT_EXPIRES_IN=1h
-JWT_REFRESH_EXPIRES_IN=7d
-```
-
-## 🧪 Testing
+## Project setup
 
 ```bash
-# Unit tests
-npm run test
-
-# E2E tests
-npm run test:e2e
-
-# Test coverage
-npm run test:cov
+$ npm install
 ```
 
-## 📦 Deployment
+## Compile and run the project
 
-### Docker Deployment
 ```bash
-# Build and run with Docker
-docker-compose up --build
+# development
+$ npm run start
 
-# Or build individually
-docker build -t laptop-tracking-backend .
-docker run -p 3000:3000 laptop-tracking-backend
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
 ```
 
-### Manual Deployment
-1. Build the application: `npm run build`
-2. Set production environment variables
-3. Start with PM2: `pm2 start dist/main.js`
+## Run tests
 
-## 🔐 Security Features
+```bash
+# unit tests
+$ npm run test
 
-- JWT authentication with refresh tokens
-- Password hashing with bcrypt
-- CORS configuration
-- Rate limiting
-- Input validation and sanitization
-- SQL injection prevention
-- XSS protection
+# e2e tests
+$ npm run test:e2e
 
-## 📊 Database Schema
-
-### Users Table
-```sql
-id: string (PK)
-email: string (unique)
-password: string
-name: string
-role: string ('admin', 'user')
-createdAt: DateTime
-updatedAt: DateTime
+# test coverage
+$ npm run test:cov
 ```
 
-### Employees Table
-```sql
-id: string (PK)
-name: string
-department: string
-email: string
-createdAt: DateTime
-updatedAt: DateTime
+## Deployment
+
+When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+
+If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+
+```bash
+$ npm install -g @nestjs/mau
+$ mau deploy
 ```
 
-### Logs Table
-```sql
-id: string (PK)
-deviceId: string
-employeeName: string
-action: string ('entry', 'exit')
-timestamp: DateTime
-createdAt: DateTime
-```
+With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
-## 🤝 API Response Format
+## Resources
 
-### Success Response
-```json
-{
-  "data": {...},
-  "message": "Operation successful",
-  "status": 200
-}
-```
+Check out a few resources that may come in handy when working with NestJS:
 
-### Error Response
-```json
-{
-  "message": "Error description",
-  "status": 400,
-  "errors": {
-    "field": ["Error message"]
-  }
-}
-```
+- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
+- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
+- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
+- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
+- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
+- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
-## 🚦 Rate Limiting
+## Support
 
-The API includes rate limiting to prevent abuse:
-- 100 requests per 15 minutes for authenticated users
-- 10 requests per 15 minutes for unauthenticated endpoints
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## 📝 License
+## Stay in touch
 
-This project is licensed under the MIT License.
+- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## 🆘 Support
+## License
 
-For support and questions:
-1. Check the [API documentation](#)
-2. Create an issue in the GitHub repository
-3. Contact the development team
-
----
-
-**Note**: This backend is designed to work with the React Native Laptop Tracking System frontend. Ensure proper CORS configuration for cross-origin requests.
+Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
