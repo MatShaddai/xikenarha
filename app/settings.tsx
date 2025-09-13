@@ -17,10 +17,9 @@ import {
   Plus,
   Save,
   Database,
-  Bell,
   Shield,
 } from "lucide-react-native";
-import { getEmployees, saveLogEntry, clearAllLogEntries, Employee } from "../utils/dataManager";
+import { getEmployees, clearAllLogEntries, Employee } from "../utils/dataManager";
 
 export default function SettingsScreen() {
   const [employees, setEmployees] = useState<Employee[]>([]);

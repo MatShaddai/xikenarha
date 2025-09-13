@@ -11,7 +11,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { ScanLine, LogIn, LogOut, Menu, Wifi, WifiOff, Clock } from "lucide-react-native";
 import { StatusBar } from "expo-status-bar";
-import { getStatistics } from "../utils/storage";
 import { getLogEntries } from "../utils/dataManager";
 
 export default function HomeScreen() {
@@ -21,7 +20,7 @@ export default function HomeScreen() {
     todayEntries: 0,
     todayExits: 0,
     currentlyInside: 0,
-    lastActivity: null,
+    lastActivity: null as string | null,
   });
   const [refreshing, setRefreshing] = useState(false);
   const [isOnline, setIsOnline] = useState(true);

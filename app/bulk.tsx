@@ -14,9 +14,7 @@ import { Link, Stack } from "expo-router";
 import {
   ArrowLeft,
   Users,
-  Plus,
   Save,
-  Trash2,
   CheckSquare,
   Square,
 } from "lucide-react-native";

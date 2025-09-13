@@ -8,6 +8,7 @@ import {
   TextInput,
   Share,
   Alert,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Stack } from "expo-router";
@@ -19,7 +20,6 @@ import {
   User,
   Search,
   X,
-  Filter,
 } from "lucide-react-native";
 import { getLogEntries, exportLogData, LogEntry } from "../utils/dataManager";
 
@@ -102,18 +102,25 @@ export default function LogScreen() {
       setExporting(true);
       const csvData = await exportLogData();
       
-      // Create a temporary file
-      const fileName = `laptop_log_${new Date().toISOString().split('T')[0]}.csv`;
-      const fileUri = FileSystem.documentDirectory + fileName;
-      
-      await FileSystem.writeAsStringAsync(fileUri, csvData);
-      
-      // Share the file
-      await Share.share({
-        url: fileUri,
-        title: 'Laptop Log Export',
-        message: 'Laptop tracking log export',
-      });
+      // Create a blob and share directly (modern approach without file system)
+      if (Platform.OS === 'web') {
+        // Web approach: create a download link
+        const blob = new Blob([csvData], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `laptop_log_${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      } else {
+        // Mobile approach: use React Native's Share API with text content
+        await Share.share({
+          message: csvData,
+          title: 'Laptop Log Export',
+        });
+      }
     } catch (error) {
       console.error('Error exporting log:', error);
       Alert.alert('Export Error', 'Failed to export log entries');

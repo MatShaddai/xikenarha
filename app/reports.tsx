@@ -17,7 +17,6 @@ import {
   Building,
   BarChart3,
   Calendar,
-  Clock,
   TrendingUp,
 } from "lucide-react-native";
 import { getLogEntries, saveLogEntry, getEmployees } from "../utils/dataManager";
@@ -31,10 +30,10 @@ export default function ReportsScreen() {
     currentlyInside: 0,
     totalVisitors: 0,
     todayVisitors: 0,
-    mostActiveDevices: [],
+    mostActiveDevices: [] as [string, number][],
     peakHour: 9,
     averageDaily: 0,
-    lastActivity: null,
+    lastActivity: null as string | null,
   });
   const [showVisitorModal, setShowVisitorModal] = useState(false);
   const [visitorForm, setVisitorForm] = useState({
@@ -43,7 +42,7 @@ export default function ReportsScreen() {
     purpose: "",
     deviceId: "",
   });
-  const [employees, setEmployees] = useState([]);
+  const [employees, setEmployees] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -93,8 +92,8 @@ export default function ReportsScreen() {
       });
       
       const mostActiveDevices = Object.entries(deviceCounts)
-        .sort(([,a], [,b]) => b - a)
-        .slice(0, 5);
+        .sort(([,a], [,b]) => (b as number) - (a as number))
+        .slice(0, 5) as [string, number][];
       
       // Calculate peak hour
       const hourCounts = {};
@@ -104,7 +103,7 @@ export default function ReportsScreen() {
       });
       
       const peakHour = Object.entries(hourCounts)
-        .sort(([,a], [,b]) => b - a)[0]?.[0] || 9;
+        .sort(([,a], [,b]) => (b as number) - (a as number))[0]?.[0] || 9;
       
       const averageDaily = Math.round(entries.length / Math.max(1, 
         Math.ceil((Date.now() - new Date(entries[entries.length - 1]?.timestamp || Date.now()).getTime()) / (24 * 60 * 60 * 1000))
@@ -170,7 +169,7 @@ export default function ReportsScreen() {
     }
   };
 
-  const formatPeakHour = (hour) => {
+  const formatPeakHour = (hour: number) => {
     const period = hour >= 12 ? "PM" : "AM";
     const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
     return `${displayHour}:00 ${period}`;
