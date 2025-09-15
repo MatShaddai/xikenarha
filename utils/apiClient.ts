@@ -32,7 +32,7 @@ class ApiClient {
 
   constructor() {
     this.client = axios.create({
-      baseURL: process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:3000/api',
+      baseURL: process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:3000',
       timeout: parseInt(process.env.EXPO_PUBLIC_API_TIMEOUT || '10000'),
       headers: {
         'Content-Type': 'application/json',
@@ -174,6 +174,76 @@ class ApiClient {
     const tokens = response.data.data;
     await this.setAuthTokens(tokens);
     return response.data;
+  }
+
+  // Employee methods
+  async getEmployees(): Promise<ApiResponse<any[]>> {
+    return this.get('/employees');
+  }
+
+  async getEmployee(id: string): Promise<ApiResponse<any>> {
+    return this.get(`/employees/${id}`);
+  }
+
+  async createEmployee(employeeData: any): Promise<ApiResponse<any>> {
+    return this.post('/employees', employeeData);
+  }
+
+  async updateEmployee(id: string, employeeData: any): Promise<ApiResponse<any>> {
+    return this.put(`/employees/${id}`, employeeData);
+  }
+
+  async deleteEmployee(id: string): Promise<ApiResponse<void>> {
+    return this.delete(`/employees/${id}`);
+  }
+
+  async searchEmployees(query: string): Promise<ApiResponse<any[]>> {
+    return this.get('/employees/search', { q: query });
+  }
+
+  async getEmployeesByDepartment(department: string): Promise<ApiResponse<any[]>> {
+    return this.get(`/employees/department/${department}`);
+  }
+
+  // Log methods
+  async getLogs(): Promise<ApiResponse<any[]>> {
+    return this.get('/logs');
+  }
+
+  async getLog(id: string): Promise<ApiResponse<any>> {
+    return this.get(`/logs/${id}`);
+  }
+
+  async createLog(logData: any): Promise<ApiResponse<any>> {
+    return this.post('/logs', logData);
+  }
+
+  async getLogsByEmployee(employeeId: string): Promise<ApiResponse<any[]>> {
+    return this.get(`/logs/employee/${employeeId}`);
+  }
+
+  async getLogsByDevice(deviceId: string): Promise<ApiResponse<any[]>> {
+    return this.get(`/logs/device/${deviceId}`);
+  }
+
+  async getLogsByAction(action: 'entry' | 'exit'): Promise<ApiResponse<any[]>> {
+    return this.get(`/logs/action/${action}`);
+  }
+
+  async getLogsByDateRange(startDate: string, endDate: string): Promise<ApiResponse<any[]>> {
+    return this.get('/logs/date-range', { startDate, endDate });
+  }
+
+  async getRecentLogs(limit?: number): Promise<ApiResponse<any[]>> {
+    return this.get('/logs/recent', { limit });
+  }
+
+  async getLogStats(): Promise<ApiResponse<any>> {
+    return this.get('/logs/stats');
+  }
+
+  async deleteLog(id: string): Promise<ApiResponse<void>> {
+    return this.delete(`/logs/${id}`);
   }
 
   // Generic API methods
